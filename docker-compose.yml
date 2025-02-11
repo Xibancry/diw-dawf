@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "8080:3000"
+    depends_on:
+      - db
+    networks:
+      - diw_network
+
+  db:
+    build: ./db
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=mydatabase
+    ports:
+      - "5432"
+    volumes:
+      - diw_postgres_data:/var/lib/postgresql/data
+    networks:
+      - diw_network
+
+volumes:
+  diw_postgres_data:
+
+networks:
+  diw_network:
+    driver: bridge
