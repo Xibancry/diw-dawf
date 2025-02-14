@@ -8,7 +8,7 @@ const port = 3000;
 app.use(express.static('public'));
 app.use(express.urlencoded({
     extended: true
-  }));
+}));
 
 // Endpoint para registrarse
 app.post('/register', async (req, res) => {
@@ -19,6 +19,17 @@ app.post('/register', async (req, res) => {
         // const result = await db.query(`SELECT * FROM USUARIOS WHERE USUARIO = ${username}`);
         const result = await db.query(`INSERT INTO USUARIOS (USUARIO, PASSWD) VALUES ('${username}', '${password}')`);
         res.status(200).send("Usuario registrado");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// Obtener usuarios desde la db
+app.get('/fetchUsers', async (req, res) => {
+    try {
+        const result = await db.query(`SELECT USUARIO FROM USUARIOS`);
+        res.status(200).send(result)
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal server error');

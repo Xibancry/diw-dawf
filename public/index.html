@@ -12,7 +12,7 @@
     <h1>¡Hola desde Docker!</h1>
     <p>Esta web es totalmente portable.</p>
     <script src="/script.js"></script>
-    <div>
+    <div id="register-form">
         <form action="/register" method="POST" id="registerForm">
             <label for="usuario">Usuario:</label>
             <input type="text" name="usuario" placeholder="juanma223" required>
@@ -21,6 +21,28 @@
             <input type="submit" value="Registrarse">
         </form>
     </div>
+    <div id="user-table">
+        <table>
+            <thead>
+                <th>Usuario</th>
+            </thead>
+            <tbody id="db-data"></tbody>
+        </table>
+    </div>
+    <script>
+        const dbTable = document.getElementById('db-data');
+        fetch('/fetchUsers')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.rows);
+            for (let i=0; i<data.rows.length; i++) {
+                let ob = data.rows[i];
+                let values = Object.values(ob);
+                console.log(values[0]);
+                dbTable.innerHTML = dbTable.innerHTML + `<tr><td>${values[0]}</td></tr>`;
+            }
+        })
+    </script>
 </body>
 
 </html>
